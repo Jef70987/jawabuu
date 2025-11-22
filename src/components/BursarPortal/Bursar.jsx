@@ -12,9 +12,20 @@ import Login from "../Authentication/Login";
 
 const Bursar = () => {
     return(
-        <div style={{display: "flex" }}>
-            <BursarSidebar/>
-            <div style={{flexGrow: 1 , padding: "20px"}}>
+        <div style={{ display: "flex", height: "100vh", overflow: "hidden",gap:"2px" }}>
+            {/* Sidebar */}
+            <div style={{ flexShrink: 0 }}>
+                <BursarSidebar/>
+            </div>
+            
+            {/* Main Content Area */}
+            <div style={{ 
+                flex: 1, 
+                overflowY: "auto",
+                padding: "0px 0rem",
+                backgroundColor: "#f8fafc",
+                minHeight: "100vh"
+            }}>
                 <Routes>
                     <Route path="/" element={<BursarDashboard/>}/>
                     <Route path="/Login" element={<Login/>}/>

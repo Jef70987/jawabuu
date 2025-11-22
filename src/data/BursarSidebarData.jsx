@@ -10,11 +10,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 export const BursarData = [
     {
-        title: "LogOut",
-        icon: <LogoutIcon sx={{color:'red',fontSize:30}}/>,
-        link: "/Login"
-    },
-    {
         title: "Dashboard",
         icon: <DashboardIcon />,
         link: "/BursarPortal/BursarDashboard"
@@ -38,7 +33,7 @@ export const BursarData = [
     {
         title: "Reports",
         icon: <DescriptionIcon />,
-        link: "/BursarPortal//Reports"
+        link: "/BursarPortal/Report"
     },
     {
         title: "Settings",

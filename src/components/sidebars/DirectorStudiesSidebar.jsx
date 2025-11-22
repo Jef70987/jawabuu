@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SidebarData } from '../../data/StudentSidebarData';
+import { DosSidebarData  } from '../../data/DirectorStudiesSidebarData';
 import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
@@ -101,7 +101,7 @@ function Sidebar() {
         {/* Navigation Items */}
         <nav className="flex-1 overflow-y-auto py-4">
           <ul className="space-y-1 px-3">
-            {SidebarData.map((val, key) => (
+            {DosSidebarData.map((val, key) => (
               <li key={key} className="relative">
                 {/* Main Navigation Item */}
                 <div

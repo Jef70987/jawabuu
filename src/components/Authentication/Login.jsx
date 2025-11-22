@@ -94,11 +94,15 @@ const Login = () => {
       <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8 border border-gray-200">
         {/* Header */}
         <div className="text-center">
-          <div className="mx-auto h-20 w-20 bg-indigo-600 rounded-full flex items-center justify-center mb-4 shadow-lg">
-            <span className="text-white text-2xl font-bold">J</span>
+          <div className="mx-auto h-50 w-50 rounded-full flex items-center justify-center mb-4 shadow-lg">
+            <img 
+              src="../assets/images/images (20).jpeg" 
+              alt="Student" 
+              className="w-50 h-50 rounded-full object-cover shadow-md"
+            />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">{schoolName}</h2>
-          <p className="text-gray-600 mb-2">Enter your credentials to access your portal</p>
+          <h2 className="text-3xl font-bold text-red-900 mb-2">{schoolName}</h2>
+          <p className="text-gray-600 mb-2">Enter your login credentials</p>
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -114,7 +118,7 @@ const Login = () => {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address
+                Username
               </label>
               <input
                 type="email"

@@ -3,36 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
-const username='John mark';
+const username = 'John Mark';
 const role = 'Bursar';
+
 const BursarDashboard = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
-
-
-  useEffect(() => {
-      updateDateTime();
-      const timeInterval = setInterval(updateDateTime, 60000);
-      
-      return () => clearInterval(timeInterval);
-    }, []);
-    
-  const updateDateTime = () => {
-    const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    setCurrentDate(now.toLocaleDateString('en-US', options));
-    
-    let hours = now.getHours();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    setCurrentTime(`${hours}:${minutes} ${ampm}`);
-  };
-
-  // State for dashboard data
   const [user, setUser] = useState([]);
+  const [timeFrame, setTimeFrame] = useState('monthly');
+  const [isLoading, setIsLoading] = useState(false);
+
   const [dashboardData] = useState({
     totalStudents: 1250,
     paidStudents: 950,
@@ -52,14 +32,30 @@ const BursarDashboard = () => {
     }
   });
 
-  const [timeFrame, setTimeFrame] = useState('monthly');
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    updateDateTime();
+    const timeInterval = setInterval(updateDateTime, 60000);
+    
+    return () => clearInterval(timeInterval);
+  }, []);
+
+  const updateDateTime = () => {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    setCurrentDate(now.toLocaleDateString('en-US', options));
+    
+    let hours = now.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    setCurrentTime(`${hours}:${minutes} ${ampm}`);
+  };
 
   // Simulate data fetching
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      // fetch from an API
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
@@ -67,172 +63,189 @@ const BursarDashboard = () => {
     fetchData();
   }, [timeFrame]);
 
-  //fetch user's name from the database using an API
+  // Fetch user's name from the database using an API
   const fetchUser = async () => {
     const username = await axios.get(`http://localhost:8080/api/user/${user}`, {
-        params: { class:'' },
-      });
-      setUser(username.data);
+      params: { class: '' },
+    });
+    setUser(username.data);
   };
+
   // Calculate percentages
   const paidPercentage = Math.round((dashboardData.paidStudents / dashboardData.totalStudents) * 100);
   const pendingPercentage = 100 - paidPercentage;
 
-  const styles = {
-    header: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '20px 0',
-      marginBottom: '30px',
-      borderBottom: '1px solid #ddd'
-    },
-    profile: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '15px'
-    },
-    profileImg: {
-      width: '100px',
-      height: '100px',
-      borderRadius: '50%',
-      objectFit: 'cover',
-      border: '2px solid #3498db'
-    },
-    welcome: {
-      fontSize: '24px',
-      color: '#2c3e50'
-    },
-    dateTime: {
-      textAlign: 'right'
-    },
-
-}
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-gray-600">Loading dashboard data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', margin: 0, padding: 0, backgroundColor: '#f5f5f5', minHeight: '100vh',overflowY:'auto' }}>
-        <header style={styles.header}>
-        <div style={styles.profile}>
-          <img src="../assets/images/images (5).png" alt='' className='student-pic' style={styles.profileImg}/>
-          <div>
-            <h1 style={styles.welcome}>Welcome, {username}</h1>
-            <p ><strong>Status:</strong> {role}</p>
+    <div className="min-h-screen bg-gray-50 w-full">
+      {/* Header - Full Width */}
+      <header className="w-full bg-white shadow-sm border-b border-gray-200">
+        <div className="w-full px-4 md:px-6 py-4 md:py-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 w-full">
+            <div className="flex items-center gap-4 w-full md:w-auto">
+              <img 
+                src="../assets/images/images (5).png" 
+                alt="Profile" 
+                className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-blue-500"
+              />
+              <div className="flex-1">
+                <h1 className="text-xl md:text-2xl font-bold text-gray-800">Welcome, {username}</h1>
+                <p className="text-gray-600"><strong>Status:</strong> {role}</p>
+              </div>
+            </div>
+            <div className="text-right w-full md:w-auto">
+              <p className="text-gray-700 font-medium text-sm md:text-base">{currentDate}</p>
+              <p className="text-gray-600 text-sm md:text-base">{currentTime}</p>
+            </div>
           </div>
         </div>
-        <div style={styles.dateTime}>
-          <p>{currentDate}</p>
-          <p>{currentTime}</p>
-        </div>
       </header>
-        {/* Main Content */}
-        <div style={{width:"1050px"}}>
-          {isLoading ? (
-            <div style={{ textAlign: 'center', padding: '40px' }}>
-              <p>Loading dashboard data...</p>
-            </div>
-          ) : (
-            <>
-              {/* Timeframe Selector */}
-              <div style={{ marginBottom: '20px', textAlign: 'right' }}>
-                <select 
-                  value={timeFrame}
-                  onChange={(e) => setTimeFrame(e.target.value)}
-                  style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                >
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="monthly">Monthly</option>
-                  <option value="yearly">Yearly</option>
-                </select>
-              </div>
 
-              {/* Status Cards */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '30px' }}>
-                <div style={{ backgroundColor: 'green', color: 'white', padding: '20px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
-                  <h3 style={{ marginTop: 0 , color:'white'}}>Total Students</h3>
-                  <p style={{ fontSize: '24px', fontWeight: 'bold', color:'white' }}>{dashboardData.totalStudents}</p>
-                </div>
-                <div style={{backgroundColor: 'orangered',  color: 'white', padding: '20px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
-                  <h3 style={{ marginTop: 0 , color:'white'}}>Paid Fees</h3>
-                  <p style={{ fontSize: '24px', fontWeight: 'bold',color:'white' }}>{dashboardData.paidStudents} ({paidPercentage}%)</p>
-                </div>
-                <div style={{ backgroundColor: 'skyblue',  color: 'white', padding: '20px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
-                  <h3 style={{ marginTop: 0, color:'white' }}>Pending Fees</h3>
-                  <p style={{ fontSize: '24px', fontWeight: 'bold', color:'white' }}>{dashboardData.pendingStudents} ({pendingPercentage}%)</p>
-                </div>
-              </div>
-
-              {/* Revenue Section */}
-              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '30px' }}>
-                <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
-                  <h3 style={{ marginTop: 0, color: '#2c3e50' }}>Fee Collection Trend</h3>
-                  <div style={{ height: '250px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-around', borderBottom: '1px solid #ddd' }}>
-                    {/* This to be replaced with a chart library in production */}
-                    {[60, 45, 75, 80, 65, 90].map((value, index) => (
-                      <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '8%' }}>
-                        <div style={{ width: '100%', backgroundColor: 'blue', height: {value}, marginBottom: '5px' }}></div>
-                        <div style={{ fontSize: '12px' }}>{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'][index]}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
-                  <h3 style={{ marginTop: 0, color: '#2c3e50' }}>Payment Methods</h3>
-                  <div style={{ marginTop: '20px' }}>
-                    {Object.entries(dashboardData.paymentMethods).map(([method, percentage]) => (
-                      <div key={method} style={{ marginBottom: '15px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                          <span>{method}</span>
-                          <span>{percentage}%</span>
-                        </div>
-                        <div style={{ height: '10px', backgroundColor: '#ecf0f1', borderRadius: '5px' }}>
-                          <div 
-                            style={{ 
-                              width: {percentage}, 
-                              height: '50%', 
-                              backgroundColor: 
-                                method === 'MPESA' ? '#2ecc71' : 
-                                method === 'Cash' ? '#3498db' : 
-                                method === 'Bank' ? '#9b59b6' : '#f39c12',
-                              borderRadius: '5px'
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Recent Payments */}
-              <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
-                <h3 style={{ marginTop: 0, color: '#2c3e50' }}>Recent Payments</h3>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr style={{ backgroundColor: 'green', color: 'blue' }}>
-                      <th style={{ padding: '10px', textAlign: 'left' }}>Admission No</th>
-                      <th style={{ padding: '10px', textAlign: 'left' }}>Name</th>
-                      <th style={{ padding: '10px', textAlign: 'left' }}>Amount</th>
-                      <th style={{ padding: '10px', textAlign: 'left' }}>Date</th>
-                      <th style={{ padding: '10px', textAlign: 'left' }}>Method</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {dashboardData.recentPayments.map((payment, index) => (
-                      <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
-                        <td style={{ padding: '10px' }}>{payment.id}</td>
-                        <td style={{ padding: '10px' }}>{payment.name}</td>
-                        <td style={{ padding: '10px', color: 'green' }}>KSh {payment.amount.toLocaleString()}</td>
-                        <td style={{ padding: '10px' }}>{payment.date}</td>
-                        <td style={{ padding: '10px' }}>{payment.method}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
+      {/* Main Content - Full Width */}
+      <div className="w-full px-4 md:px-6 py-4 md:py-6">
+        {/* Timeframe Selector */}
+        <div className="w-full mb-6 flex justify-end">
+          <select 
+            value={timeFrame}
+            onChange={(e) => setTimeFrame(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full md:w-auto"
+          >
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
         </div>
+
+        {/* Status Cards - Full Width Grid */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+          <div className="bg-green-500 text-white p-6 rounded-lg shadow-sm w-full">
+            <h3 className="text-lg font-semibold mb-2">Total Students</h3>
+            <p className="text-2xl md:text-3xl font-bold">{dashboardData.totalStudents.toLocaleString()}</p>
+          </div>
+          <div className="bg-orange-500 text-white p-6 rounded-lg shadow-sm w-full">
+            <h3 className="text-lg font-semibold mb-2">Paid Fees</h3>
+            <p className="text-2xl md:text-3xl font-bold">
+              {dashboardData.paidStudents.toLocaleString()} ({paidPercentage}%)
+            </p>
+          </div>
+          <div className="bg-sky-500 text-white p-6 rounded-lg shadow-sm w-full">
+            <h3 className="text-lg font-semibold mb-2">Pending Fees</h3>
+            <p className="text-2xl md:text-3xl font-bold">
+              {dashboardData.pendingStudents.toLocaleString()} ({pendingPercentage}%)
+            </p>
+          </div>
+        </div>
+
+        {/* Revenue Section - Full Width */}
+        <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+          {/* Fee Collection Trend - Takes 2/3 on large screens */}
+          <div className="xl:col-span-2 bg-white p-4 md:p-6 rounded-lg shadow-sm w-full">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Fee Collection Trend</h3>
+            <div className="h-64 md:h-80 w-full flex items-end justify-between space-x-1 md:space-x-2 border-b border-gray-200 pb-4">
+              {[60, 45, 75, 80, 65, 90, 85, 70, 95, 88, 78, 82].map((value, index) => (
+                <div key={index} className="flex flex-col items-center flex-1 min-w-[30px]">
+                  <div 
+                    className="w-full bg-blue-500 rounded-t transition-all duration-300 hover:bg-blue-600"
+                    style={{ height: `${value}%` }}
+                  ></div>
+                  <div className="text-xs text-gray-600 mt-2 hidden md:block">
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][index]}
+                  </div>
+                  <div className="text-[10px] text-gray-600 mt-1 md:hidden">
+                    {['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'][index]}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Payment Methods - Takes 1/3 on large screens */}
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow-sm w-full">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Payment Methods</h3>
+            <div className="space-y-4 w-full">
+              {Object.entries(dashboardData.paymentMethods).map(([method, percentage]) => (
+                <div key={method} className="space-y-2 w-full">
+                  <div className="flex justify-between text-sm w-full">
+                    <span className="font-medium text-gray-700">{method}</span>
+                    <span className="text-gray-600">{percentage}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className={`h-2 rounded-full ${
+                        method === 'MPESA' ? 'bg-green-500' :
+                        method === 'Cash' ? 'bg-blue-500' :
+                        method === 'Bank' ? 'bg-purple-500' : 'bg-yellow-500'
+                      }`}
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Payments - Full Width */}
+        <div className="w-full bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className="p-4 md:p-6 w-full">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Payments</h3>
+          </div>
+          <div className="w-full overflow-x-auto">
+            <table className="w-full min-w-[600px]">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Admission No
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Amount
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Method
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {dashboardData.recentPayments.map((payment, index) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {payment.id}
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {payment.name}
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-green-600 font-medium">
+                      KSh {payment.amount.toLocaleString()}
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {payment.date}
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {payment.method}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
