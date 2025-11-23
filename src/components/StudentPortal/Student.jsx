@@ -6,14 +6,13 @@ import AcademicRecords from "./AcademicRecord";
 import Bot from "./Bot";
 import CareerGuidance from "./Analytics";
 import FeeManagement from "./FeeManagement";
-import Analysis from "./HelpSupport";
-
 import Settings from "./Settings";
 import StudentProfile from "./StudentProfile";
 import ExtraCurriculumn from "./ExtraCurriculumn"
 import Login from "../Authentication/Login";
 import Notices from "./HostelActivities";
 import LearningPlatform from "./learningMaterials";
+import StudentHelpSupport from "./HelpSupport";
 
 const Student = () => {
     return(
@@ -39,11 +38,11 @@ const Student = () => {
                     <Route path="/Bot" element={<Bot/>}/>
                     <Route path="/CareerGuidance" element={<CareerGuidance/>}/>
                     <Route path="/FeeManagement" element={<FeeManagement/>}/>
-                    <Route path="/Analysis" element={<Analysis/>}/>
                     <Route path="/Notices" element={<Notices/>}/>
                     <Route path="/Learning" element={<LearningPlatform/>}/>
                     <Route path="/ExtraCurriculumn" element={<ExtraCurriculumn/>}/>
                     <Route path="/Settings" element={<Settings/>}/>
+                    <Route path="/Help&Support" element={<StudentHelpSupport/>}/>
                     <Route path="/StudentProfile" element={<StudentProfile/>}/>
                 </Routes>
             </div>

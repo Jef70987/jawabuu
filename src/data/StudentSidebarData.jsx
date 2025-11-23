@@ -74,7 +74,7 @@ export const SidebarData = [
   {
     title: "Help & Support",
     icon: <HelpIcon sx={{fontSize:30}}/>,
-    link: "/StudentPortal/Analysis"
+    link: "/StudentPortal/Help&Support"
   },
   {
     title: "LogOut",

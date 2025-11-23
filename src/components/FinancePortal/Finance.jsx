@@ -9,36 +9,37 @@ import Report from "./Report";
 import HelpSupport from "./HelpSupport";
 import Settings from "./Settings";
 import Login from "../Authentication/Login";
-import SidebarData from "../../data/FinanceSidebarData";
 
 
 const Finance = () => {
     return(
-        <div style={{display: "flex" }}>
-            <FinanceSidebar/>
-            <div className="mobile-container" >
-                <nav className="top-nav" >
-                    {SidebarData.slice(0, 17).map((item, index) => (
-                        <a href={item.link} key={index} className="nav-item" >
-                            {item.icon}
-                            <span>{item.title}</span>
-                        </a>
-                    ))}
-                </nav>
-                <div style={{flexGrow: 1 , padding: "20px"}}>
-                    <Routes>
-                        <Route path="/" element={<Dashboard/>}/>
-                        <Route path="/Login" element={<Login/>}/>
-                        <Route path="/Dashboard" element={<Dashboard/>}/>
-                        <Route path="/FeeManagement" element={<FeeManagement/>}/>
-                        <Route path="/PayrollManagement" element={<PayrollManagement/>}/>
-                        <Route path="/ExpenseManagement" element={<ExpenseManagement/>}/>
-                        <Route path="/Report" element={<Report/>}/>
-                        <Route path="/HelpSupport" element={<HelpSupport/>}/>
-                        <Route path="/Settings" element={<Settings/>}/>
-                    </Routes>
-                </div>
-                </div>
+        <div style={{ display: "flex", height: "100vh", overflow: "hidden",gap:"2px" }}>
+            {/* Sidebar */}
+            <div style={{ flexShrink: 0 }}>
+                <FinanceSidebar/>
+            </div>
+            
+            {/* Main Content Area */}
+            <div style={{ 
+                flex: 1, 
+                overflowY: "auto",
+                padding: "0px 0rem",
+                backgroundColor: "#f8fafc",
+                minHeight: "100vh"
+            }}>
+                <Routes>
+                    <Route path="/" element={<Dashboard/>}/>
+                    <Route path="/Login" element={<Login/>}/>
+                    <Route path="/Dashboard" element={<Dashboard/>}/>
+                    <Route path="/FeeManagement" element={<FeeManagement/>}/>
+                    <Route path="/PayrollManagement" element={<PayrollManagement/>}/>
+                    <Route path="/ExpenseManagement" element={<ExpenseManagement/>}/>
+                    <Route path="/Reports" element={<Report/>}/>
+                    <Route path="/HelpSupport" element={<HelpSupport/>}/>
+                    <Route path="/Settings" element={<Settings/>}/>
+                </Routes>
+            </div>
+                
         </div>
     );
 };
