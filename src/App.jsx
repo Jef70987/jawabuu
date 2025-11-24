@@ -55,6 +55,7 @@ function App() {
                         <Teacher/>
                     
                         }/>
+                <Route path="*" element={<Login/>}/>
             </Routes>
         </Router>
     );

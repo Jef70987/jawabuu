@@ -44,6 +44,7 @@ const Student = () => {
                     <Route path="/Settings" element={<Settings/>}/>
                     <Route path="/Help&Support" element={<StudentHelpSupport/>}/>
                     <Route path="/StudentProfile" element={<StudentProfile/>}/>
+                    <Route path="*" element={<Login/>}/>
                 </Routes>
             </div>
         </div>
