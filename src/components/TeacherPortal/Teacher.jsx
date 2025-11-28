@@ -2,18 +2,15 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import TeacherSidebar from "../sidebars/TeacherSidebar";
 import Dashboard from "./Dashboard";
-import Assessment from "./Assessment";
 import Assignments from "./Assignments";
 import Attendance from "./Attendance";
-import ClassMgnt from "./ClassMgnt";
-import Communication from "./Communication";
 import HelpSupport from "./HelpSupport";
-import LearningMaterials from "./LearningMaterials";
-//import PerformanceTracking from "./PerformanceTracking";
 import Settings from "./Settings";
 import Timetable from "./Timetable";
 import Reports from "./Reports";
-import Login from "../Authentication/Login";
+import ClassMng from "./ClassMgnt";
+import LearningMng from "./LearningMaterials";
+import { Assessment } from "@mui/icons-material";
 
 const Teacher = () => {
     return(
@@ -22,18 +19,15 @@ const Teacher = () => {
             <div style={{ width:"90vw", Height:"100vh"}}>
                 <Routes>
                     <Route path="/" element={<Dashboard/>}/>
-                    <Route path="/Login" element={<Login/>}/>
                     <Route path="/Dashboard" element={<Dashboard/>}/>
-                    <Route path="/Assessment" element={<Assessment/>}/>
                     <Route path="/Assignments" element={<Assignments/>}/>
+                    <Route path="/Assessment" element={<Assessment/>}/>
                     <Route path="/Attendance" element={<Attendance/>}/>
-                    <Route path="/ClassMgnt" element={<ClassMgnt/>}/>
-                    <Route path="/Communication" element={<Communication/>}/>
-                    <Route path="/HelpSupport" element={<HelpSupport/>}/>
-                    <Route path="/LearningMaterials" element={<LearningMaterials/>}/>
+                    <Route path="/Class" element={<ClassMng/>}/>
+                    <Route path="/Help&Support" element={<HelpSupport/>}/>
+                    <Route path="/LearningMaterials" element={<LearningMng/>}/>
                     <Route path="/Timetable" element={<Timetable/>}/>
                     <Route path="/Settings" element={<Settings/>}/>
-                    
                     <Route path="/Reports" element={<Reports/>}/>
                 </Routes>
             </div>

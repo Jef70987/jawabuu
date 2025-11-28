@@ -12,13 +12,9 @@ import SchoolIcon from '@mui/icons-material/School';
 import DescriptionIcon from '@mui/icons-material/Description';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import HelpIcon from '@mui/icons-material/Help';
 
 export const TeacherSidebarData = [
-  {
-    title: "LogOut",
-    icon: <LogoutIcon sx={{color:'red',fontSize:30}}/>,
-    link: "/Login"
-  },
   {
     title: "Dashboard",
     icon: <DashboardIcon />,
@@ -27,7 +23,7 @@ export const TeacherSidebarData = [
   {
     title: "Class ",
     icon: <ClassIcon />,
-    link: "/TeacherPortal/ClassMgnt"
+    link: "/TeacherPortal/Class"
   },
   {
     title: "Assessment",
@@ -49,26 +45,13 @@ export const TeacherSidebarData = [
     icon: <LibraryBooksIcon />,
     link: "/TeacherPortal/LearningMaterials"
   },
-  {
-    title: "Analytics",
-    icon: <BarChartIcon />,
-    link: "/TeacherPortal/PerformanceTracking"
-  },
-  {
-    title: "Communication",
-    icon: <EmailIcon />,
-    link: "/TeacherPortal/Communication"
-  },
+
   {
     title: "Timetable",
     icon: <ScheduleIcon />,
     link: "/TeacherPortal/Timetable"
   },
-  {
-    title: "Profession",
-    icon: <SchoolIcon />,
-    link: "/TeacherPortal/professional-development"
-  },
+ 
   {
     title: "Reports",
     icon: <DescriptionIcon />,
@@ -78,7 +61,12 @@ export const TeacherSidebarData = [
     title: "Settings",
     icon: <SettingsIcon />,
     link: "/TeacherPortal/Settings"
-  }
+  },
+  {
+    title: "Help & Support",
+    icon: <HelpIcon sx={{fontSize:30}}/>,
+    link: "/TeacherPortal/Help&Support"
+  },
 ];
 
 export default TeacherSidebarData;
